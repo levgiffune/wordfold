@@ -27,6 +27,7 @@ export class Board{
     squares: Array<Square>;
     size: number;
     selected: Square | null;
+    win: boolean;
 
     constructor(data: Array<string>){
         let i = 0;
@@ -43,14 +44,15 @@ export class Board{
         }
         this.size = SIZE;
         this.selected = null;
+        this.win = false;
     }
 
     fold(move: Move){
-        if(this.selected){
+        if(this.selected  && !this.win){
             let targetIdx = (5 * this.selected.row) + this.selected.column + move.column + (5 * move.row);
             if(targetIdx >= 0 && targetIdx < this.squares.length){
                 let target = this.squares[targetIdx];
-                if(target.letters != ""){
+                if(target.letters != "" && target.letters.length + this.selected.letters.length <= 6){
                     target.letters = this.selected.letters + target.letters;
                     this.selected.letters = "";
                     this.selected = target;
@@ -105,7 +107,6 @@ export class Model{
     board: Board;
     moves: number;
     score: number;
-    win: boolean;
     config: string;
     
 
@@ -114,20 +115,29 @@ export class Model{
         this.board = new Board(JSON.parse(config).initial);
         this.score = 0;
         this.moves = 0;
-        this.win = false;
     }
 
     checker(){
         let solutions = JSON.parse(this.config).words;
-        let tmpWin = true;
+        let win = true;
+        let numSq = 0;
         for(let s of this.board.squares){
-            if(solutions.indexOf(s.letters) < 0 && s.letters != ""){
-                tmpWin = false;
+            if(s.letters != ""){
+                numSq++;
+                if(solutions.indexOf(s.letters) < 0){
+                    win = false;
+                }
             }
+            
         }
 
-        this.win = tmpWin;
-        return this.win;
+        if(numSq == 5){
+            this.board.win = true;
+            return  win ? "Congratulations!" : "Try again!";
+        }
+
+        return "";
+        
     }
 
     calcScore(){

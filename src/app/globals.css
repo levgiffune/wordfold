@@ -21,3 +21,11 @@ button{
   border: 1px solid black;
   padding: 3px;
 }
+
+#dropdown{
+  padding-left: 10px;
+}
+
+#dropdown select{
+  border: 1px solid black;
+}
