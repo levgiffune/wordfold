@@ -1,8 +1,10 @@
 import {Board} from './model'
 
-export function drawPuzzle(ctx: any, board: Board){
+export function redraw(ctx: any, board: Board){
     let canvas = ctx.getContext("2d");
+
     if(canvas){
+        canvas.clearRect(0, 0, ctx.width, ctx.height);
         canvas.fillStyle = "yellow";
         let sel = board.getSelected();
 
@@ -18,5 +20,7 @@ export function drawPuzzle(ctx: any, board: Board){
             canvas.fillText(s.get(), s.getColumn()*(ctx.width/5)+(ctx.width/10)-(3*s.size()), s.getRow()*(ctx.height/5)+(ctx.height/10)+5)
             canvas.strokeRect(s.getColumn()*(ctx.width/5), s.getRow()*(ctx.height/5), ctx.width/5, ctx.height/5)
         }
+        return true;
     }
+    return false;
 }

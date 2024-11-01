@@ -128,26 +128,25 @@ export class Move{
         case "KeyW":
           this.row = -1;
           this.column = 0;
-          break;
+          return this;
         case "ArrowLeft":
         case "KeyA":
           this.row = 0;
           this.column = -1;
-          break;
+          return this;
         case "ArrowDown":
         case "KeyS":
           this.row = 1;
           this.column = 0;
-          break;
+          return this;
         case "ArrowRight":
         case "KeyD":
           this.row = 0;
           this.column = 1;
-          break;
+          return this;
         default:
-            return false;
+            return null;
       }
-      return true;
     }
   }
 

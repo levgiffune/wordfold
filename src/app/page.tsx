@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import {Model, Board, Move} from '../model';
-import {drawPuzzle} from '../boundary';
+import {redraw} from '../boundary';
 
 const config1 = {
   "name": "#1",
@@ -55,15 +55,6 @@ export function select(x: number, y: number, board: Board, ctx: any){
   return null;
 }
 
-function redraw(ctx: any, board: Board){
-  const canvas = ctx.getContext('2d');
-
-  if (canvas){
-    canvas.clearRect(0, 0, ctx.width, ctx.height);
-    drawPuzzle(ctx, board);
-  }
-}
-
 export default function Home() {
   const [score, setScore] = React.useState(0);
   const [moves, setMoves] = React.useState(0);
@@ -83,9 +74,17 @@ export default function Home() {
         setMoves(moves + 1);
         setScore(model.calcScore());
         redraw(canvasRef.current, model.getBoard());
+        return true;
       }
     }
-    
+    return false;
+  }
+
+  const reset = () => {
+    setModel(new Model(JSON.stringify(conf))); 
+    setMoves(0); 
+    setScore(0); 
+    setWin("");
   }
 
   React.useEffect(() => {
@@ -104,13 +103,6 @@ export default function Home() {
     redraw(canvasRef.current, model.getBoard());
     reset();
   }, [conf]);
-
-  function reset(){
-    setModel(new Model(JSON.stringify(conf))); 
-    setMoves(0); 
-    setScore(0); 
-    setWin("");
-  }
 
   return (
     <body>
