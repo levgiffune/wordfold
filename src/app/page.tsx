@@ -46,7 +46,7 @@ export function select(x: number, y: number, board: Board, ctx: any){
   let truex = x-rect.left;
   let truey = y-rect.top;
 
-  for(let s of board.squares){
+  for(let s of board.get()){
     if(s.contains(truex, truey, board)){
       return s;
     }
@@ -79,10 +79,10 @@ export default function Home() {
     let direction = new Move();
     
     if(direction.parseKey(e.code)){
-      if(model.board.fold(direction)){
+      if(model.getBoard().fold(direction)){
         setMoves(moves + 1);
         setScore(model.calcScore());
-        redraw(canvasRef.current, model.board);
+        redraw(canvasRef.current, model.getBoard());
       }
     }
     
@@ -97,11 +97,11 @@ export default function Home() {
   });
   
   React.useEffect(() => {
-    redraw(canvasRef.current, model.board);
+    redraw(canvasRef.current, model.getBoard());
   }, [model, conf])
 
   React.useEffect(() => {
-    redraw(canvasRef.current, model.board);
+    redraw(canvasRef.current, model.getBoard());
     reset();
   }, [conf]);
 
@@ -121,7 +121,7 @@ export default function Home() {
           <button id="check" onClick={(e) => {
             setWin(model.checker());
           }}>check solution</button>
-          {win}
+          <span  className={win == "Congratulations!" ? "green" : "red"}>{win}</span>
       </label>
       <label id="dropdown">
             Choose a puzzle theme
@@ -135,8 +135,8 @@ export default function Home() {
             </select>
       </label>
       <canvas ref={canvasRef} onClick={(e) =>{
-        model.board.selected = select(e.clientX, e.clientY, model.board, canvasRef.current);
-        redraw(canvasRef.current, model.board);
+        model.getBoard().setSelected(select(e.clientX, e.clientY, model.getBoard(), canvasRef.current));
+        redraw(canvasRef.current, model.getBoard());
       }}/>
     </body>
   );
