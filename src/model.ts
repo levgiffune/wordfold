@@ -1,9 +1,9 @@
 const SIZE = 500;
 
 export class Square{
-    private letters: string;
-    private row: number;
-    private column: number;
+    letters: string;
+    row: number;
+    column: number;
     
     constructor(column: number, row: number, letters: string){
         this.letters = letters;
@@ -12,42 +12,22 @@ export class Square{
     }
 
     contains(x: number, y: number, board: Board){
-        if(x >= this.column*SIZE/5 &&
-             y >= this.row*SIZE/5 &&
-             x < (this.column + 1)*SIZE/5 &&
-             y < (this.row + 1)*SIZE/5){
+        if(x >= this.column*board.size/5 &&
+             y >= this.row*board.size/5 &&
+             x < (this.column + 1)*board.size/5 &&
+             y < (this.row + 1)*board.size/5){
                 return true;
         }
 
         return false;
     }
-
-    size(){
-        return this.letters.length;
-    }
-
-    set(s: string){
-        this.letters = s;
-    }
-
-    get(){
-        return this.letters;
-    }
-
-    getColumn(){
-        return this.column;
-    }
-
-    getRow(){
-        return this.row;
-    }
 }
   
 export class Board{
-    private squares: Array<Square>;
-    private size: number;
-    private selected: Square | null;
-    private win: boolean;
+    squares: Array<Square>;
+    size: number;
+    selected: Square | null;
+    win: boolean;
 
     constructor(data: Array<string>){
         let i = 0;
@@ -67,35 +47,14 @@ export class Board{
         this.win = false;
     }
 
-    get(){
-        return this.squares;
-    }
-
-    setWin(w: boolean){
-        this.win = w;
-    }
-
-    getSelected(){
-        return this.selected;
-    }
-
-    setSelected(s: Square|null){
-        if(s){
-            this.selected = s;
-        }
-        
-    }
-
     fold(move: Move){
         if(this.selected  && !this.win){
-            let targetIdx = (5 * this.selected.getRow()) + this.selected.getColumn() + move.getColumn() + (5 * move.getRow());
+            let targetIdx = (5 * this.selected.row) + this.selected.column + move.column + (5 * move.row);
             if(targetIdx >= 0 && targetIdx < this.squares.length){
                 let target = this.squares[targetIdx];
-                if(target.get() != "" && target.size() + this.selected.size() <= 6 &&
-                    !(this.selected.getColumn() == 4 && target.getColumn() == 0)){
-
-                    target.set(this.selected.get() + target.get());
-                    this.selected.set("");
+                if(target.letters != "" && target.letters.length + this.selected.letters.length <= 6){
+                    target.letters = this.selected.letters + target.letters;
+                    this.selected.letters = "";
                     this.selected = target;
                     return true;
                 }
@@ -106,22 +65,14 @@ export class Board{
 }
 
 export class Move{
-    private row: number;
-    private column: number;
+    row: number;
+    column: number;
   
     constructor(){
       this.row = 0;
       this.column = 0;
     }
-    
-    getColumn(){
-        return this.column;
-    }
-
-    getRow(){
-        return this.row;
-    }
-
+  
     parseKey(code: String){
       switch(code){
         case "ArrowUp":
@@ -152,10 +103,10 @@ export class Move{
 
 
 export class Model{
-    private board: Board;
-    private moves: number;
-    private score: number;
-    private config: string;
+    board: Board;
+    moves: number;
+    score: number;
+    config: string;
     
 
     constructor(config: string){
@@ -169,10 +120,10 @@ export class Model{
         let solutions = JSON.parse(this.config).words;
         let win = true;
         let numSq = 0;
-        for(let s of this.board.get()){
-            if(s.get() != ""){
+        for(let s of this.board.squares){
+            if(s.letters != ""){
                 numSq++;
-                if(solutions.indexOf(s.get()) < 0){
+                if(solutions.indexOf(s.letters) < 0){
                     win = false;
                 }
             }
@@ -180,7 +131,7 @@ export class Model{
         }
 
         if(numSq == 5){
-            this.board.setWin(true);
+            this.board.win = true;
             return  win ? "Congratulations!" : "Try again!";
         }
 
@@ -192,11 +143,11 @@ export class Model{
         let solutions = JSON.parse(this.config).words;
         let score = 0;
 
-        for(let s of this.board.get()){
-            if(s.size() > 1){
+        for(let s of this.board.squares){
+            if(s.letters.length > 1){
                 for(let sol of solutions){
-                    if(sol.includes(s.get())){
-                        score += s.size();
+                    if(sol.includes(s.letters)){
+                        score += s.letters.length;
                     }
                 }
             }
@@ -205,9 +156,5 @@ export class Model{
 
         this.score = score;
         return this.score;
-    }
-
-    getBoard(){
-        return this.board;
     }
 }
