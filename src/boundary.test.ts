@@ -1,7 +1,9 @@
 import { expect, test } from "vitest"
 import Home from "./app/page"
-import { render } from "react-dom";
+import {config1} from './config'
+import { Model } from "./model";
 
-test("renders at all", () => {
-    expect(true).toBeTruthy();
+let m = new Model(JSON.stringify(config1));
+test("select", () => {
+    
 })

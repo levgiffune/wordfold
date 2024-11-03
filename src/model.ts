@@ -11,11 +11,11 @@ export class Square{
         this.column = column;
     }
 
-    contains(x: number, y: number, board: Board){
-        if(x >= this.column*board.size/5 &&
-             y >= this.row*board.size/5 &&
-             x < (this.column + 1)*board.size/5 &&
-             y < (this.row + 1)*board.size/5){
+    contains(x: number, y: number){
+        if(x >= this.column*SIZE/5 &&
+             y >= this.row*SIZE/5 &&
+             x < (this.column + 1)*SIZE/5 &&
+             y < (this.row + 1)*SIZE/5){
                 return true;
         }
 
@@ -25,7 +25,6 @@ export class Square{
   
 export class Board{
     squares: Array<Square>;
-    size: number;
     selected: Square | null;
     win: boolean;
 
@@ -42,7 +41,6 @@ export class Board{
             }
             
         }
-        this.size = SIZE;
         this.selected = null;
         this.win = false;
     }
@@ -52,7 +50,9 @@ export class Board{
             let targetIdx = (5 * this.selected.row) + this.selected.column + move.column + (5 * move.row);
             if(targetIdx >= 0 && targetIdx < this.squares.length){
                 let target = this.squares[targetIdx];
-                if(target.letters != "" && target.letters.length + this.selected.letters.length <= 6){
+                if(target.letters != "" && 
+                    target.letters.length + this.selected.letters.length <= 6 &&
+                    Math.abs(target.column - this.selected.column) != 4){
                     target.letters = this.selected.letters + target.letters;
                     this.selected.letters = "";
                     this.selected = target;
@@ -77,24 +77,24 @@ export class Move{
       switch(code){
         case "ArrowUp":
         case "KeyW":
-          this.row = -1;
-          this.column = 0;
-          return this;
+            this.row = -1;
+            this.column = 0;
+            return this;
         case "ArrowLeft":
         case "KeyA":
-          this.row = 0;
-          this.column = -1;
-          return this;
+            this.row = 0;
+            this.column = -1;
+            return this;
         case "ArrowDown":
         case "KeyS":
-          this.row = 1;
-          this.column = 0;
-          return this;
+            this.row = 1;
+            this.column = 0;
+            return this;
         case "ArrowRight":
         case "KeyD":
-          this.row = 0;
-          this.column = 1;
-          return this;
+            this.row = 0;
+            this.column = 1;
+            return this;
         default:
             return null;
       }
@@ -151,7 +151,6 @@ export class Model{
                     }
                 }
             }
-            
         }
 
         this.score = score;

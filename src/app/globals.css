@@ -29,3 +29,11 @@ button{
 #dropdown select{
   border: 1px solid black;
 }
+
+.green{
+  color: green;
+}
+
+.red{
+  color: red;
+}

@@ -1,43 +1,8 @@
 'use client'
 import React from 'react';
 import {Model, Board, Move} from '../model';
-import {redraw} from '../boundary';
-
-const config1 = {
-  "name": "#1",
-  "words" : [ "CYAN", "YELLOW", "PURPLE", "MAUVE", "BLUE" ],
-  "theme" : "Colors",
-  "initial": [ ['E', 'L', 'W', 'Y', 'C'],
-               ['Y', 'L', 'O', 'A', 'N'],
-               ['U', 'B', 'L', 'E', 'E'],
-               ['E', 'L', 'P', 'M', 'V'],
-               ['P', 'U', 'R', 'A', 'U']
-             ]
-}
-  
-const config2 = {
-  "name": "#2",
-  "words" : [ "TAPIR", "EAGLE", "JAGUAR", "SNAKE", "WOLF"],
-  "theme" : "Animals",
-  "initial": [ ['E', 'K', 'O', 'A', 'P'],
-               ['A', 'W', 'L', 'I', 'R'],
-               ['N', 'S', 'F', 'A', 'T'],
-               ['L', 'E', 'E', 'R', 'A'],
-               ['A', 'G', 'G', 'U', 'J']
-             ]
-}
-
-const config3 = {
-  "name": "#3",
-  "words" : [ "CHERRY", "PAPAYA", "BANANA", "PEAR", "FIG" ],
-  "theme" : "Fruits",
-  "initial": [ ['H', 'C', 'N', 'A', 'N'],
-               ['Y', 'R', 'A', 'A', 'A'],
-               ['R', 'E', 'A', 'Y', 'B'],
-               ['F', 'P', 'P', 'E', 'R'],
-               ['I', 'G', 'A', 'P', 'A']
-             ]
-}
+import {redraw} from '../boundary'
+import {config1, config2, config3} from '../config'
 
 
 export function select(x: number, y: number, board: Board, ctx: any){
@@ -47,7 +12,7 @@ export function select(x: number, y: number, board: Board, ctx: any){
   let truey = y-rect.top;
 
   for(let s of board.squares){
-    if(s.contains(truex, truey, board)){
+    if(s.contains(truex, truey)){
       return s;
     }
   }
@@ -62,8 +27,6 @@ export default function Home() {
   const [conf, setConf] = React.useState(config1);
   const [model, setModel] = React.useState(new Model(JSON.stringify(conf)));
 
-
-
   const canvasRef = React.useRef(null);
 
   const handleKey = (e: any) => {
@@ -73,7 +36,7 @@ export default function Home() {
       if(model.board.fold(direction)){
         setMoves(moves + 1);
         setScore(model.calcScore());
-        redraw(canvasRef.current, model.getBoard());
+        redraw(canvasRef.current, model.board);
         return true;
       }
     }
@@ -113,7 +76,7 @@ export default function Home() {
           <button id="check" onClick={(e) => {
             setWin(model.checker());
           }}>check solution</button>
-          {win}
+          <span id="message" className={win == "Congratulations!" ? "green" : "red"}>{win}</span>
       </label>
       <label id="dropdown">
             Choose a puzzle theme
@@ -126,7 +89,7 @@ export default function Home() {
               <option value="3">{config3.theme}</option>
             </select>
       </label>
-      <canvas ref={canvasRef} onClick={(e) =>{
+      <canvas id="canvas" ref={canvasRef} onClick={(e) =>{
         model.board.selected = select(e.clientX, e.clientY, model.board, canvasRef.current);
         redraw(canvasRef.current, model.board);
       }}/>
