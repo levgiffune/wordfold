@@ -1,8 +1,7 @@
 import { expect, test } from "vitest"
 import { Model } from "./model";
-import {select} from './app/page'
+import {select} from './controller'
 import { cleanup, render } from "@testing-library/react";
-import Home from "./app/page";
 
 const config = {
     "name": "#1",
