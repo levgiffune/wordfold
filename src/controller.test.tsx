@@ -1,6 +1,8 @@
 import { expect, test } from "vitest"
-import Home from "./app/page"
 import { Model } from "./model";
+import {select} from './app/page'
+import { cleanup, render } from "@testing-library/react";
+import Home from "./app/page";
 
 const config = {
     "name": "#1",
@@ -15,6 +17,13 @@ const config = {
   }
 
 let m = new Model(JSON.stringify(config));
+
 test("select", () => {
+    const {getByTestId} = render(<canvas data-testid="test"/>);
+    const canvas = getByTestId("test");
+
+    expect(select(0, 0, m.board, canvas) == null).toBe(false);
+    expect(select(999, 999, m.board, canvas) == null).toBe(true);
+    cleanup();
     
 })

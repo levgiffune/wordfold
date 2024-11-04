@@ -39,7 +39,6 @@ const config3 = {
              ]
 }
 
-
 export function select(x: number, y: number, board: Board, ctx: any){
   let rect = ctx.getBoundingClientRect();
 
@@ -109,12 +108,12 @@ export default function Home() {
       <h1 className={win == "Congratulations!" ? "green" : "red"}>{win}</h1>
       <div className="line">
         <label id="buttons">
-            <button id="reset" onClick={(e) => {reset()}}>reset</button>
-            <button id="check" onClick={(e) => {
+            <button data-testid="reset" onClick={(e) => {reset()}}>reset</button>
+            <button data-testid="check" onClick={(e) => {
               setWin(model.checker());
             }}>check solution</button>
         </label>
-        <label id="dropdown">
+        <label data-testid="dropdown" id="dropdown">
               Choose a puzzle theme
               <select
                 value={conf.name.substring(1)}
@@ -126,7 +125,7 @@ export default function Home() {
               </select>
         </label>
       </div>
-      <canvas id="canvas" ref={canvasRef} onClick={(e) =>{
+      <canvas data-testid="canvas" id="canvas" ref={canvasRef} onClick={(e) =>{
         model.board.selected = select(e.clientX, e.clientY, model.board, canvasRef.current);
         redraw(canvasRef.current, model.board);
       }}/>
