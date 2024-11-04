@@ -4,4 +4,4 @@
 ## To test
 `npm run test`, or to see code coverage `npm run test -- --coverage`
 ## Live production build
-[Click here](https://wordfold-lnchdu7q8-levgiffunes-projects.vercel.app/)
+[Click here](https://wordfold.vercel.app/)
