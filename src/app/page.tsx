@@ -3,6 +3,7 @@ import React from 'react';
 import {Model, Board, Move} from '../model';
 import {redraw} from '../boundary'
 
+//configurations
 const config1 = {
   "name": "#1",
   "words" : [ "CYAN", "YELLOW", "PURPLE", "MAUVE", "BLUE" ],
@@ -39,44 +40,54 @@ const config3 = {
              ]
 }
 
+//Controller for select square use case
 function select(x: number, y: number, board: Board, ctx: any){
+  //find x/y within relative to the canvas
   let rect = ctx.getBoundingClientRect();
-
   let truex = x-rect.left;
   let truey = y-rect.top;
 
+  //find out what square we clicked
   for(let s of board.squares){
     if(s.contains(truex, truey)){
       return s;
     }
   }
   
+  //we will never hit this in practice since this only runs when the click is in bounds
   return null;
 }
 
 export default function Home() {
+  //state variables
   const [score, setScore] = React.useState(0);
   const [moves, setMoves] = React.useState(0);
   const [win, setWin] = React.useState("");
   const [conf, setConf] = React.useState(config1);
   const [model, setModel] = React.useState(new Model(JSON.stringify(conf)));
-
   const canvasRef = React.useRef(null);
 
+  //controller for move use case
   const handleKey = (e: any) => {
     let direction = new Move();
     
+    //make sure we got a valid key
     if(direction.parseKey(e.code)){
+      //make sure the move is valid
       if(model.board.fold(direction)){
+        //increment moves, update score, refresh display
         setMoves(moves + 1);
         setScore(model.calcScore());
         redraw(canvasRef.current, model.board);
         return true;
       }
     }
+
+    //we did not make a move
     return false;
   }
 
+  //controller for reset use case
   const reset = () => {
     setModel(new Model(JSON.stringify(conf))); 
     setMoves(0); 
@@ -84,18 +95,21 @@ export default function Home() {
     setWin("");
   }
 
+  //bind move controller
   React.useEffect(() => {
     document.addEventListener("keydown", handleKey);
-    // clean up
+    //cleanup
     return () => {
       document.removeEventListener("keydown", handleKey);
     };
   });
   
+  //bind refresh to model
   React.useEffect(() => {
     redraw(canvasRef.current, model.board);
-  }, [model, conf])
+  }, [model])
 
+  //bind reset and refresh to config (i.e. changing conf resets score and moves)
   React.useEffect(() => {
     redraw(canvasRef.current, model.board);
     reset();
@@ -105,8 +119,8 @@ export default function Home() {
     <body>
       <h1>Score: {score}</h1>
       <h1>Moves: {moves}</h1>
-      <p>Click a square to select it. Use the arrow keys or WASD to move a square.</p>
-      <p>Try to make 5 words matching the theme. When you think you have solved the puzzle, check your solution.</p>
+      <p>Click a square to select it. Use the arrow keys or WASD to move a square. 
+        Try to make 5 words matching the theme. When you think you have solved the puzzle, check your solution.</p>
       <h1 className={win == "Congratulations!" ? "green" : "red"}>{win}</h1>
       <div className="line">
         <label id="buttons">

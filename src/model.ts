@@ -1,5 +1,6 @@
 const SIZE = 500;
 
+//one square on a board
 export class Square{
     letters: string;
     row: number;
@@ -11,6 +12,7 @@ export class Square{
         this.column = column;
     }
 
+    //do we contain these coordinates? 
     contains(x: number, y: number){
         if(x >= this.column*SIZE/5 &&
              y >= this.row*SIZE/5 &&
@@ -18,7 +20,6 @@ export class Square{
              y < (this.row + 1)*SIZE/5){
                 return true;
         }
-
         return false;
     }
 }
@@ -33,6 +34,7 @@ export class Board{
         let j = 0;
         this.squares = [];
 
+        //populate from config
         for(let n of data){
             for(let s of n){
                 this.squares.push(new Square(i, j, s));
@@ -45,25 +47,35 @@ export class Board{
         this.win = false;
     }
 
+    //main logic engine of the game
     fold(move: Move){
+        //are we allowed to fold?
         if(this.selected  && !this.win){
+            //if so find the intended target
             let targetIdx = (5 * this.selected.row) + this.selected.column + move.column + (5 * move.row);
+            //are we moving to a real square?
             if(targetIdx >= 0 && targetIdx < this.squares.length){
+                //if so get it
                 let target = this.squares[targetIdx];
+                //is our move legal  (as per assignment spec)
                 if(target.letters != "" && 
                     target.letters.length + this.selected.letters.length <= 6 &&
                     Math.abs(target.column - this.selected.column) != 4){
+                    //if so, fold
                     target.letters = this.selected.letters + target.letters;
                     this.selected.letters = "";
+                    //to allow move chaining we move selection as well
                     this.selected = target;
                     return true;
                 }
             }
         }
+        //something was illegal, fail quietly
         return false;
     }
 }
 
+//helper class
 export class Move{
     row: number;
     column: number;
@@ -72,7 +84,8 @@ export class Move{
       this.row = 0;
       this.column = 0;
     }
-  
+    
+    //parse direction in the vertical and horizontal from WASD or arrows
     parseKey(code: String){
       switch(code){
         case "ArrowUp":
@@ -116,33 +129,38 @@ export class Model{
         this.moves = 0;
     }
 
+    //win checker
     checker(){
         let solutions = JSON.parse(this.config).words;
         let win = true;
         let numSq = 0;
+        //iterate squares to find soln words
         for(let s of this.board.squares){
+            //how many squares are filled?
             if(s.letters != ""){
                 numSq++;
+                //since there are 5 solns, any wrong answer in 5 squares ensures failure
                 if(solutions.indexOf(s.letters) < 0){
                     win = false;
                 }
             }
-            
         }
 
+        //make sure only 5 squares are filled
         if(numSq == 5){
+            //tell the board we won so player can't move anymore
             this.board.win = true;
             return  win ? "Congratulations!" : "Try again!";
         }
-
         return "";
-        
     }
 
+    //calculate score as per assignment spec
     calcScore(){
         let solutions = JSON.parse(this.config).words;
         let score = 0;
 
+        //iterate squares and find fragments of solutions
         for(let s of this.board.squares){
             if(s.letters.length > 1){
                 for(let sol of solutions){
@@ -153,6 +171,7 @@ export class Model{
             }
         }
 
+        //update
         this.score = score;
         return this.score;
     }
