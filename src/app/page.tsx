@@ -39,7 +39,7 @@ const config3 = {
              ]
 }
 
-export function select(x: number, y: number, board: Board, ctx: any){
+function select(x: number, y: number, board: Board, ctx: any){
   let rect = ctx.getBoundingClientRect();
 
   let truex = x-rect.left;
