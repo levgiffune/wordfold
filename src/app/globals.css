@@ -4,12 +4,23 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  max-width: 750px;
+  margin: auto;
+}
+
+.line *{
+  display: inline-block;
+  margin-inline: 5px;
+}
+
+.line label *{
+  border: 1px solid black;
+  border-radius: 5px;
 }
 
 canvas{
   width: 500px;
   height: 500px;
-  position: absolute;
   background-color: #ccc;
 }
 
@@ -17,17 +28,12 @@ h1{
   font-size: 30px;
 }
 
+#message{
+  display: inline;
+}
+
 button{
-  border: 1px solid black;
-  padding: 3px;
-}
-
-#dropdown{
-  padding-left: 10px;
-}
-
-#dropdown select{
-  border: 1px solid black;
+  padding-inline: 3px;
 }
 
 .green{
