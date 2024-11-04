@@ -106,7 +106,6 @@ export default function Home() {
       <h1>Score: {score}</h1>
       <h1>Moves: {moves}</h1>
       <h1 className={win == "Congratulations!" ? "green" : "red"}>{win}</h1>
-      <p>Click a square to select it. Use the arrow keys or WASD to move a square.</p>
       <div className="line">
         <label id="buttons">
             <button data-testid="reset" onClick={(e) => {reset()}}>reset</button>
