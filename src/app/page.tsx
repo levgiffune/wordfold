@@ -105,6 +105,8 @@ export default function Home() {
     <body>
       <h1>Score: {score}</h1>
       <h1>Moves: {moves}</h1>
+      <p>Click a square to select it. Use the arrow keys or WASD to move a square.</p>
+      <p>Try to make 5 words matching the theme. When you think you have solved the puzzle, check your solution.</p>
       <h1 className={win == "Congratulations!" ? "green" : "red"}>{win}</h1>
       <div className="line">
         <label id="buttons">
