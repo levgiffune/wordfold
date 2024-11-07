@@ -116,11 +116,23 @@ export default function Home() {
               Choose a puzzle theme
               <select
                 value={conf.name.substring(1)}
-                onChange={(e) => {setConf(eval("config" + e.target.value))}}
+                onChange={(e) => {
+                  switch (e.target.value){
+                    case "1":
+                      setConf(config1);
+                      break;
+                    case "2":
+                      setConf(config2);
+                      break;
+                    case "3":
+                    setConf(config3);
+                    break;
+                  }
+                }}
               >
-                <option value={1}>{config1.theme}</option>
-                <option value={2}>{config2.theme}</option>
-                <option value={3}>{config3.theme}</option>
+                <option value="1">{config1.theme}</option>
+                <option value="2">{config2.theme}</option>
+                <option value="3">{config3.theme}</option>
               </select>
         </label>
       </div>
