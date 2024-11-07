@@ -23,6 +23,9 @@ test("select", () => {
 
     expect(select(0, 0, m.board, canvas) == null).toBe(false);
     expect(select(999, 999, m.board, canvas) == null).toBe(true);
+
+    m.board.squares[0].letters = "";
+    expect(select(0, 0, m.board, canvas) == null).toBe(true);
     cleanup();
     
 })

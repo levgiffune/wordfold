@@ -9,11 +9,11 @@ export function select(x: number, y: number, board: Board, ctx: any){
   
     //find out what square we clicked
     for(let s of board.squares){
-      if(s.contains(truex, truey)){
+      if(s.contains(truex, truey) && s.letters != ""){
         return s;
       }
     }
     
-    //we will never hit this in practice since this only runs when the click is in bounds
+    //we hit this when square is empty
     return null;
   }
