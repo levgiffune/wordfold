@@ -15,11 +15,11 @@ const config = {
                ]
   }
 
-let m = new Model(JSON.stringify(config));
+const m = new Model(JSON.stringify(config));
 
 test("select", () => {
     const {getByTestId} = render(<canvas data-testid="test"/>);
-    const canvas = getByTestId("test");
+    const canvas = getByTestId("test") as HTMLCanvasElement;
 
     expect(select(0, 0, m.board, canvas) == null).toBe(false);
     expect(select(999, 999, m.board, canvas) == null).toBe(true);

@@ -35,8 +35,8 @@ export class Board{
         this.squares = [];
 
         //populate from config
-        for(let n of data){
-            for(let s of n){
+        for(const n of data){
+            for(const s of n){
                 this.squares.push(new Square(i, j, s));
                 i++;
                 if(i > 4){i = 0; j++}
@@ -52,11 +52,11 @@ export class Board{
         //are we allowed to fold?
         if(this.selected  && !this.win){
             //if so find the intended target
-            let targetIdx = (5 * this.selected.row) + this.selected.column + move.column + (5 * move.row);
+            const targetIdx = (5 * this.selected.row) + this.selected.column + move.column + (5 * move.row);
             //are we moving to a real square?
             if(targetIdx >= 0 && targetIdx < this.squares.length){
                 //if so get it
-                let target = this.squares[targetIdx];
+                const target = this.squares[targetIdx];
                 //is our move legal  (as per assignment spec)
                 if(target.letters != "" && 
                     target.letters.length + this.selected.letters.length <= 6 &&
@@ -86,7 +86,7 @@ export class Move{
     }
     
     //parse direction in the vertical and horizontal from WASD or arrows
-    parseKey(code: String){
+    parseKey(code: string){
       switch(code){
         case "ArrowUp":
         case "KeyW":
@@ -131,11 +131,11 @@ export class Model{
 
     //win checker
     checker(){
-        let solutions = JSON.parse(this.config).words;
+        const solutions = JSON.parse(this.config).words;
         let win = true;
         let numSq = 0;
         //iterate squares to find soln words
-        for(let s of this.board.squares){
+        for(const s of this.board.squares){
             //how many squares are filled?
             if(s.letters != ""){
                 numSq++;
@@ -157,13 +157,13 @@ export class Model{
 
     //calculate score as per assignment spec
     calcScore(){
-        let solutions = JSON.parse(this.config).words;
+        const solutions = JSON.parse(this.config).words;
         let score = 0;
 
         //iterate squares and find fragments of solutions
-        for(let s of this.board.squares){
+        for(const s of this.board.squares){
             if(s.letters.length > 1){
-                for(let sol of solutions){
+                for(const sol of solutions){
                     if(sol.includes(s.letters)){
                         score += s.letters.length;
                     }

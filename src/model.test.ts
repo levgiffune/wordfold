@@ -1,6 +1,5 @@
 import { expect, test } from 'vitest'
 import { Model, Square, Move } from './model';
-import exp from 'constants';
 
 const config = {
     "name": "#1",
@@ -46,12 +45,12 @@ test("Model", () => {
 
 test("Board", () => {
   m = new Model(JSON.stringify(config));
-  let b = m.board;
-  let sLet = [];
-  let down = new Move()
+  const b = m.board;
+  const sLet = [];
+  const down = new Move()
   down.row = 1;
 
-  for(let s of b.squares){
+  for(const s of b.squares){
     sLet.push(s.letters);
   }
 
@@ -69,7 +68,7 @@ test("Board", () => {
 })
 
 test("Move", () => {
-  let move = new Move();
+  const move = new Move();
 
   expect(move.row).toBe(0);
   expect(move.column).toBe(0);
@@ -102,8 +101,8 @@ test("Move", () => {
 })
 
 test("Square", () => {
-  let s = m.board.squares[8];
-  let empty = m.board.squares[4];
+  const s = m.board.squares[8];
+  const empty = m.board.squares[4];
 
   expect(s.letters).toBe("CYA");
   expect(empty.letters).toBe("");

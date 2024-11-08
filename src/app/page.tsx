@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import {Model, Board, Move} from '../model';
+import {Model, Move} from '../model';
 import {redraw} from '../boundary'
 import { select } from '../controller';
 
@@ -51,8 +51,8 @@ export default function Home() {
   const canvasRef = React.useRef(null);
 
   //controller for move use case
-  const handleKey = (e: any) => {
-    let direction = new Move();
+  const handleKey = (e: KeyboardEvent) => {
+    const direction = new Move();
     
     //make sure we got a valid key
     if(direction.parseKey(e.code)){
@@ -107,8 +107,8 @@ export default function Home() {
       <h1 className={win == "Congratulations!" ? "green" : "red"}>{win}</h1>
       <div className="line">
         <label id="buttons">
-            <button data-testid="reset" onClick={(e) => {reset()}}>reset</button>
-            <button data-testid="check" onClick={(e) => {
+            <button data-testid="reset" onClick={() => {reset()}}>reset</button>
+            <button data-testid="check" onClick={() => {
               setWin(model.checker());
             }}>check solution</button>
         </label>

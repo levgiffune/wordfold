@@ -1,6 +1,6 @@
-import { expect, test, vi } from "vitest"
+import { expect, test } from "vitest"
 import Home from "./app/page"
-import {cleanup, fireEvent, render} from "@testing-library/react";
+import {cleanup, render} from "@testing-library/react";
 import React from 'react';
 
 test("render", () => {
