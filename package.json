@@ -23,6 +23,7 @@
     "@vitejs/plugin-react": "^4.3.3",
     "@vitest/coverage-v8": "^2.1.4",
     "canvas": "^2.11.2",
+    "eslint": "^9.14.0",
     "eslint-config-next": "15.0.1",
     "jsdom": "^25.0.1",
     "postcss": "^8",
